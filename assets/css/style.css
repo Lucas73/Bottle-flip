@@ -1,0 +1,49 @@
+#container {
+  display: flex;
+}
+
+#containerScore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#text-score, #score {
+  color:grey;
+  text-align: center;
+  font-weight: bold;
+}
+
+#score {
+  font-size: 75px;
+  
+}
+
+#text-score {
+  font-size: 30px;
+  margin-top: 35px;
+}
+
+#canvas {
+  width:90%;
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid red;
+}
+
+#best, #best-score {
+  color:grey;
+  text-align: center;
+  font-weight: bold;
+}
+
+#best-score {
+  font-size: 75px;
+  
+}
+
+#best {
+  font-size: 30px;
+  margin-top: 35px;
+}
