@@ -3,10 +3,10 @@ function Game(canvas) {
   this.ctx = canvas.getContext("2d");
   this.intervalId = undefined;
   this.rect = new Rectangle(this.ctx, this.x, this.y);
-  this.bottle = new Bottle(this.ctx);
+  this.bottle = new Bottle(this.ctx, this.alive);
   this.background = new Background(this.ctx)
+  this.guy = new Guy(this.ctx);
   this.score = 0;
-
   this.setEvents();
 };
 
@@ -35,6 +35,8 @@ Game.prototype.drawAll = function() {
   this.bottle.limits(this.rect);
   this.rect.draw();
   this.bottle.draw();
+  this.guy.draw(this.bottle);
+  this.guy.move(this.bottle);
 
   this.bottle.scoring();
 };
@@ -43,7 +45,12 @@ Game.prototype.drawAll = function() {
 
 Game.prototype.setEvents = function() {
   this.ctx.canvas.addEventListener('click', function(event) {
+    if (this.bottle.y != 650 && this.bottle.x != 527.5){
+      return
+    }else{
     this.bottle.move(event.x - 200, event.y);
+    new Audio("assets/sound/sonido-de-botella-saliendo.m4a").play();
+    }
   }.bind(this));
 }
 

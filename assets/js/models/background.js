@@ -27,7 +27,7 @@ function Background(ctx) {
   this.h = this.ctx.canvas.height;
 
   this.img = new Image();
-  this.img.src = 'assets/img/Background-sprite-drunken.png';
+  this.img.src = 'assets/img/drunken2-back.png';
   this.img.frames = 3;
   this.img.frameIndex = 0;
 

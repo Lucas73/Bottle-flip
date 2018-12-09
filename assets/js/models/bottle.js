@@ -27,6 +27,10 @@ function Bottle(ctx) {
   this.drawCount = 0;
 
   this.alive = true;
+  miObjeto = {
+    value: 0
+  };
+  recordFinal = 0;
 }
 
 Bottle.prototype.draw = function() {
@@ -45,7 +49,6 @@ Bottle.prototype.draw = function() {
 };
 
 Bottle.prototype.move = function(x, y) {
-  this.Sounds.play(0);
   this.moveToDestiny(x, y);
 };
 
@@ -53,6 +56,7 @@ Bottle.prototype.scoring = function(score) {
   var element = document.getElementById("score");
   element.innerText = this.score;
 };
+
 
 Bottle.prototype.moveToDestiny = function(x, y) {
   this.vy = -9;
@@ -67,10 +71,13 @@ Bottle.prototype.limits = function(rect) {
     return;
   }
 
+
+
   if (this.y >= this.ctx.canvas.height - this.height + 1) {
     this.alive = false;
-    this.getContinue();
-    this.reStart();
+    // this.getContinue();
+    this.reStart(rect);
+    this.bottleAlive = false;
     return false;
   } else if (
     this.y + this.height > rect.y && this.y + this.height < rect.y + rect.width &&
@@ -87,6 +94,7 @@ Bottle.prototype.limits = function(rect) {
     return true;
   }
 };
+
 
 Bottle.prototype.animate = function() {
   switch (this.state) {
@@ -110,13 +118,13 @@ Bottle.prototype.getContinue = function(rect) {
   setTimeout(
     function() {
       rect.move();
-      this.x = CANVASMID;
+      this.x = CANVASMID - 35;
       this.y = this.ctx.canvas.height - this.height;
       this.vx = 0;
       this.vy = 0;
       this.g = 0;
     }.bind(this),
-    1000
+    250
   );
 };
 
@@ -126,51 +134,74 @@ Bottle.prototype.addPoint = function() {
   } else {
     this.score = 1;
   }
+
+
+// Guardo el objeto como un string
+
+if (this.score > recordFinal) {
+  recordFinal = this.score;
+}
+
+miObjeto.value = recordFinal;
+
+localStorage.setItem('datos', JSON.stringify(miObjeto));
+
+  var guardado = localStorage.getItem('datos');
+  var record = JSON.parse(guardado);
+
+  var element = document.getElementById("best-score");
+
+  localStorage.setItem('datos', JSON.stringify(recordFinal));
+
+  element.innerText = recordFinal;
+
+
+
+
 };
 
-Bottle.prototype.reStart = function() {
-  if (this.score === 0) {
-    alert("Whats Wrong with You?!");
-  } else if (this.score > 0 && this.score < 5) {
-    alert("You should work harder!");
-  } else {
-    alert("Good Job!");
-  }
 
-  location.reload();
-};
+
+Bottle.prototype.reStart = function(rect) {
+
+  new Audio("assets/sound/caida-fallida.m4a").play();
+      new Audio("assets/sound/risa-de-derrota.m4a").play();
+
+ 
+  this.x = CANVASMID - 35;
+  this.y = this.ctx.canvas.height - this.height;
+  this.vx = 0;
+  this.vy = 0;
+  this.g = 0;
+  this.score = 0;
+
+  rect.x = CANVASMID - 100;
+  rect.y = 300;
+  rect.width = 200;
+  rect.height = 25;
+  this.alive = true;
+}
 
 // Gamificador de los puntos -------------->
 
-document.addEventListener('DOMContentLoaded', function() {
-  var score = getScore();
-  console.log(score);
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//   var score = getScore();
+//   console.log(score);
+// });
 
-function getScore() {
-  var score = localStorage.getItem('score') || '{}';
-  return JSON.parse(score);
-}
-
-function addScore(name, value) {
-  var score = getScore();
-
-  score[name] = value;
-
-  localStorage.setItem('score', JSON.stringify(score));
-}
-
-// function Sounds() {
-//   this.sounds = [
-//     "sonido-de-botella-saliendo.m4a",
-//   ];
+// function getScore() {
+//   var score = localStorage.getItem('score') || '{}';
+//   return JSON.parse(score);
 // }
 
-// Sounds.prototype.play = function(track){
-//   new Audio("./sounds.js/" + this.sounds[track]).play();
-// };
+// function addScore(name, value) {
+//   var score = getScore();
 
-new Audio("assets/sound/sonido-de-botella-saliendo.m4a").play();
+//   score[name] = value;
+
+//   localStorage.setItem('score', JSON.stringify(score));
+// }
+
 
 // Gamificador de Fran <----------------
 
@@ -200,3 +231,4 @@ new Audio("assets/sound/sonido-de-botella-saliendo.m4a").play();
 // function loadState() {
 //   return JSON.parse(localStorage.getItem('data'))
 // }
+
