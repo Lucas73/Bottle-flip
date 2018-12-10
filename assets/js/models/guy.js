@@ -35,10 +35,10 @@ Guy.prototype.draw = function() {
   }
 };
 
-Guy.prototype.move = function(bottle) {
+Guy.prototype.move = function(bottle, rect) {
   this.framesCounter += 1;
   this.x = this.x + 2;
-  this.limits(bottle);
+  this.limits(bottle, rect);
 
 
   if ((this.framesCounter % 20) === 0) {
@@ -52,12 +52,18 @@ Guy.prototype.move = function(bottle) {
   // this.limits(bottle);
 }
 
-Guy.prototype.limits = function(bottle) {
-  console.log(bottle.x + 500 - this.x);
+Guy.prototype.limits = function(bottle,rect) {
 if(this.x >= bottle.x + 450 && bottle.y >= 650 && bottle.x + 500 - this.x >= 0) {
   bottle.x = bottle.x + 2;
 }else if(bottle.x >= this.ctx.canvas.width){
-  bottle.x = CANVASMID;
+  bottle.x = CANVASMID - 35;
+  bottle.score = 0;
+  rect.x = CANVASMID - 100;
+  rect.y = 300;
+  rect.width = 200;
+    new Audio("assets/sound/caida-fallida.m4a").play();
+      new Audio("assets/sound/risa-de-derrota.m4a").play();
+    }
 }
-}
+
 

@@ -61,9 +61,9 @@ Bottle.prototype.scoring = function(score) {
 Bottle.prototype.moveToDestiny = function(x, y) {
   this.vy = -9;
   this.g = 0.1;
-  var width = x > this.x ? -(this.width / 2) : this.width / 2;
+  var width = x > this.x ? - (this.width / 2) : this.width / 2;
 
-  this.vx = (x - this.x + width) * 0.01;
+  this.vx = (x - this.x + width / 2) * 0.01;
 };
 
 Bottle.prototype.limits = function(rect) {
