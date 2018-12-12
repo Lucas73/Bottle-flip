@@ -14,10 +14,7 @@ function Game(canvas) {
 Game.prototype.start = function() {
   this.intervalId = setInterval(function() {
     this.clear();
-    // this.moveBar();
     this.drawAll();
-    //this.checkGameOver();
-    //this.moveAll();
   }.bind(this), DRAW_INTERVAL_MS / 2);
 };
 
@@ -25,10 +22,6 @@ Game.prototype.start = function() {
 Game.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 };
-
-// Game.prototype.moveBar = function() {
-//   this.rect.move();
-// }
 
 Game.prototype.drawAll = function() {
   this.background.draw();

@@ -5,6 +5,7 @@ function Bottle(ctx) {
   this.width = 70;
   this.height = 150;
   this.score = 0;
+  this.img.frameIndex = 0;
 
   this.x = CANVASMID - 35;
   this.y = this.ctx.canvas.height - this.height;
@@ -57,12 +58,10 @@ Bottle.prototype.scoring = function(score) {
   element.innerText = this.score;
 };
 
-
 Bottle.prototype.moveToDestiny = function(x, y) {
   this.vy = -9;
   this.g = 0.1;
-  var width = x > this.x ? - (this.width / 2) : this.width / 2;
-
+  var width = x > this.x ? -(this.width / 2) : this.width / 2;
   this.vx = (x - this.x + width / 2) * 0.01;
 };
 
@@ -70,18 +69,15 @@ Bottle.prototype.limits = function(rect) {
   if (!this.alive) {
     return;
   }
-
-
-
   if (this.y >= this.ctx.canvas.height - this.height + 1) {
     this.alive = false;
-    // this.getContinue();
     this.reStart(rect);
     this.bottleAlive = false;
     return false;
   } else if (
-    this.y + this.height > rect.y && this.y + this.height < rect.y + rect.width &&
-    this.vy > 0 && 
+    this.y + this.height > rect.y &&
+    this.y + this.height < rect.y + rect.width &&
+    this.vy > 0 &&
     this.x >= rect.x - this.width / 2 &&
     this.x < rect.x + rect.width - this.width / 2
   ) {
@@ -94,7 +90,6 @@ Bottle.prototype.limits = function(rect) {
     return true;
   }
 };
-
 
 Bottle.prototype.animate = function() {
   switch (this.state) {
@@ -135,39 +130,28 @@ Bottle.prototype.addPoint = function() {
     this.score = 1;
   }
 
+  if (this.score > recordFinal) {
+    recordFinal = this.score;
+  }
 
-// Guardo el objeto como un string
+  miObjeto.value = recordFinal;
 
-if (this.score > recordFinal) {
-  recordFinal = this.score;
-}
+  localStorage.setItem("datos", JSON.stringify(miObjeto));
 
-miObjeto.value = recordFinal;
-
-localStorage.setItem('datos', JSON.stringify(miObjeto));
-
-  var guardado = localStorage.getItem('datos');
+  var guardado = localStorage.getItem("datos");
   var record = JSON.parse(guardado);
 
   var element = document.getElementById("best-score");
 
-  localStorage.setItem('datos', JSON.stringify(recordFinal));
+  localStorage.setItem("datos", JSON.stringify(recordFinal));
 
   element.innerText = recordFinal;
-
-
-
-
 };
 
-
-
 Bottle.prototype.reStart = function(rect) {
-
   new Audio("assets/sound/caida-fallida.m4a").play();
-      new Audio("assets/sound/risa-de-derrota.m4a").play();
+  new Audio("assets/sound/risa-de-derrota.m4a").play();
 
- 
   this.x = CANVASMID - 35;
   this.y = this.ctx.canvas.height - this.height;
   this.vx = 0;
@@ -180,55 +164,4 @@ Bottle.prototype.reStart = function(rect) {
   rect.width = 200;
   rect.height = 25;
   this.alive = true;
-}
-
-// Gamificador de los puntos -------------->
-
-// document.addEventListener('DOMContentLoaded', function() {
-//   var score = getScore();
-//   console.log(score);
-// });
-
-// function getScore() {
-//   var score = localStorage.getItem('score') || '{}';
-//   return JSON.parse(score);
-// }
-
-// function addScore(name, value) {
-//   var score = getScore();
-
-//   score[name] = value;
-
-//   localStorage.setItem('score', JSON.stringify(score));
-// }
-
-
-// Gamificador de Fran <----------------
-
-// window.onload = function() {
-//   alert('SAVE STATE ON LOCAL STORAGE')
-//   var temporalData = {
-//       name: 'Lucas',
-//       score: 23
-//   }
-//   saveState(temporalData)
-//   setTimeout(function() {
-//       var stateLoaded = loadState()
-//       console.info('ESTADO CARGADO => ', stateLoaded)
-//       alert('siguiente partida')
-//       temporalData = {
-//           name: 'Lucas',
-//           score: 110
-//       }
-//       saveState(temporalData)
-//   }.bind(this), 2000)
-// }
-
-// function saveState(data) {
-//   localStorage.setItem('data', JSON.stringify(data))
-// }
-
-// function loadState() {
-//   return JSON.parse(localStorage.getItem('data'))
-// }
-
+};

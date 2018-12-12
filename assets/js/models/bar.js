@@ -13,7 +13,6 @@ Rectangle.prototype.move = function() {
 }
 
 Rectangle.prototype.draw = function() {
-  //this.animate();
 
   this.ctx.fillRect(
     this.x,
